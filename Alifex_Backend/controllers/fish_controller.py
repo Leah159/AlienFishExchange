@@ -61,7 +61,7 @@ def patch_fish(request):
 
             if sell:
                 name, age = database.fish.get_fish_name_and_age(fish_id)
-                database.fish.update_quantity_fish(user_id, name, age, -quantity, False)
+                database.fish.update_quantity_fish(user_id, name, age, -quantity, freeze)
                 response = format_ok_response({ResponseKeys.message: ResponseMessages.fish_sold_success})
             else:
                 if freeze:

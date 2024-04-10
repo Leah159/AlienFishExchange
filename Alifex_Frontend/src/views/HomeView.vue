@@ -353,7 +353,7 @@
             <v-btn
               color="primary"
               class="mx-auto"
-              @click="sellFish()"
+              @click="sellFish(selectedFish[currentFishIndex][9])"
             >
               Sell
             </v-btn>
@@ -1365,14 +1365,14 @@ export default {
       this.groupFish();
       this.placeFishButtons();
     },
-    async sellFish() {
+    async sellFish(frozen) {
       if (this.sellFishQuantity <= this.selectedFish[this.currentFishIndex][4]) {
         const FISHDATA = {
           user_id: this.$store.getters.getUserId,
           fish_id: this.selectedFish[this.currentFishIndex][0],
           quantity: parseInt(this.sellFishQuantity, 10),
           sell: true,
-          freeze: false,
+          freeze: Boolean(frozen),
         };
         const FISHRESPONSE = await API.sellFish(FISHDATA);
         if (FISHRESPONSE.data.success === true) {
@@ -1390,6 +1390,7 @@ export default {
         }
         this.fishDialog = false;
         this.sellFishDialog = false;
+        this.sellFishQuantity = 1;
         this.selectedFish = [];
         this.currentFishIndex = 0;
         this.reloadContainer();
@@ -1457,6 +1458,7 @@ export default {
           this.getFishDetails();
           this.freezeDialog = false;
           this.fishDialog = false;
+          this.freezeFishQuantity = 1;
         }
       } else {
         this.alertMessage = 'You do not have enough fish to freeze this amount';
@@ -1478,6 +1480,7 @@ export default {
           this.getFishDetails();
           this.unfreezeDialog = false;
           this.fishDialog = false;
+          this.unfreezeFishQuantity = 1;
         }
       } else {
         this.alertMessage = 'You do not have enough fish to defrost this amount';
